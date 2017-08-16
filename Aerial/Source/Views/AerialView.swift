@@ -14,6 +14,8 @@ import AVKit
 @objc(AerialView)
 class AerialView: ScreenSaverView {
     var playerLayer: AVPlayerLayer!
+    var nameLabel = NSTextField(frame: NSRect(x: 4, y: 0, width: 100, height: 20))
+
     var preferencesController: PreferencesWindowController?
     static var players: [AVPlayer] = [AVPlayer]()
     static var previewPlayer: AVPlayer?
@@ -168,6 +170,12 @@ class AerialView: ScreenSaverView {
         ManifestLoader.instance.addCallback { videos in
             self.playNextVideo()
         }
+        
+        nameLabel.drawsBackground = false
+        nameLabel.isEditable = false
+        nameLabel.isBezeled = false
+        nameLabel.textColor = .white
+        self.addSubview(nameLabel)
     }
     
     // MARK: - AVPlayerItem Notifications
@@ -240,6 +248,8 @@ class AerialView: ScreenSaverView {
         if player.rate == 0 {
             player.play()
         }
+        
+        self.nameLabel.stringValue = video.name
         
         guard let currentItem = player.currentItem else {
             NSLog("Aerial Error: No current item!")
